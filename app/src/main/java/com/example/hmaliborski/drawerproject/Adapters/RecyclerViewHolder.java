@@ -7,11 +7,11 @@ import android.widget.Toast;
 
 import com.example.hmaliborski.drawerproject.R;
 
-public class FileSystemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     ImageView cellImageView;
 
-    public FileSystemViewHolder(View itemView) {
+    public RecyclerViewHolder(View itemView) {
         super(itemView);
         cellImageView = (ImageView) itemView.findViewById(R.id.cell_image);
         itemView.setOnClickListener(this);

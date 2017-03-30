@@ -5,41 +5,39 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
-    FileSystemFragment fragment;
+    ImageFragment fragment;
     FragmentTransaction transaction;
+    private DrawerLayout drawerLayout;
+    private ListView listView;
+    private String[] titles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         isStoragePermissionGranted();
 
+        titles = new String[]{"File system images", "Assets images", "Internet images"};
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        listView = (ListView) findViewById(R.id.left_drawer);
+        fragment = new ImageFragment();
 
-        fragment = new FileSystemFragment();
-    }
-
-
-    public void onClick(View v) {
-        transaction = getSupportFragmentManager().beginTransaction();
-        switch (v.getId())
-        {
-            case R.id.main_button_add:
-                transaction.add(R.id.main_frame, fragment);
-                break;
-
-            case R.id.main_button_remove:
-                transaction.remove(fragment);
-                break;
-        }
-        transaction.commit();
+        listView.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, titles));
+        listView.setOnItemClickListener(new DrawerItemClickListener());
     }
 
     public boolean isStoragePermissionGranted()
@@ -68,4 +66,33 @@ public class MainActivity extends AppCompatActivity {
             Log.v("Permission","Permission: "+permissions[0]+ "was "+grantResults[0]);
         }
     }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
+
+    private void selectItem(int position) {
+        Fragment fragment = new ImageFragment();
+        Bundle args = new Bundle();
+
+        args.putInt(ImageFragment.TYPE_OF_IMAGE, position);
+        fragment.setArguments(args);
+
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_frame, fragment);
+        transaction.commit();
+
+        listView.setItemChecked(position, true);
+        setTitle(titles[position]);
+        drawerLayout.closeDrawer(listView);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        getSupportActionBar().setTitle(title);
+    }
+
 }

@@ -1,7 +1,5 @@
 package com.example.hmaliborski.drawerproject.Data;
 
-import android.graphics.Bitmap;
-
 public class ImageData {
 
     String imagePath;
