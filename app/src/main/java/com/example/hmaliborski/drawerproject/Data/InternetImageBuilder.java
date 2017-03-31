@@ -2,10 +2,13 @@ package com.example.hmaliborski.drawerproject.Data;
 
 import android.content.Context;
 
+import com.example.hmaliborski.drawerproject.Data.IImageBuilder;
+import com.example.hmaliborski.drawerproject.Data.ImageData;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class InternetImageBuilder implements IImageBuilder{
+public class InternetImageBuilder implements IImageBuilder {
 
     @Override
     public List<ImageData> createListOfImages(Context context) {

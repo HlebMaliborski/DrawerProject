@@ -7,13 +7,22 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.hmaliborski.drawerproject.Constants.Constants;
+import com.example.hmaliborski.drawerproject.Data.IImageBuilder;
+import com.example.hmaliborski.drawerproject.Data.ImageData;
+import com.example.hmaliborski.drawerproject.Enums.ImageEnum;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssetsImageBuilder implements IImageBuilder{
+public class AssetsImageBuilder implements IImageBuilder {
+
+    private ImageEnum imageEnum;
+    public AssetsImageBuilder(ImageEnum imageEnum)
+    {
+        this.imageEnum = imageEnum;
+    }
 
     @Override
     public List<ImageData> createListOfImages(Context context) {
@@ -26,7 +35,16 @@ public class AssetsImageBuilder implements IImageBuilder{
             Uri uri;
             for (String item : images)
             {
-                list.add(new ImageData(Constants.ANDROID_ASSETS_PATH + File.separator + Constants.ASSETS_FOLDER + File.separator + item));
+                switch (imageEnum)
+                {
+                    case CUSTOM_ASSETS:
+                        list.add(new ImageData(Constants.ASSETS_FOLDER + File.separator + item));
+                        break;
+                    case PICASSO_ASSETS:
+                        list.add(new ImageData(Constants.ANDROID_ASSETS_PATH + File.separator + Constants.ASSETS_FOLDER + File.separator + item));
+                        break;
+                }
+
             }
         }
         catch (IOException e)

@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.os.Environment;
 
 import com.example.hmaliborski.drawerproject.Constants.Constants;
+import com.example.hmaliborski.drawerproject.Data.IImageBuilder;
+import com.example.hmaliborski.drawerproject.Data.ImageData;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileSystemImageBuilder implements IImageBuilder{
+public class FileSystemImageBuilder implements IImageBuilder {
 
     @Override
     public List<ImageData> createListOfImages(Context context) {

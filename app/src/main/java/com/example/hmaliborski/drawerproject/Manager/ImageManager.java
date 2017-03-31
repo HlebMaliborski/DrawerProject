@@ -8,26 +8,30 @@ import com.example.hmaliborski.drawerproject.Data.FileSystemImageBuilder;
 import com.example.hmaliborski.drawerproject.Data.IImageBuilder;
 import com.example.hmaliborski.drawerproject.Data.ImageData;
 import com.example.hmaliborski.drawerproject.Data.InternetImageBuilder;
+import com.example.hmaliborski.drawerproject.Enums.ImageEnum;
 
 import java.util.List;
 
 public class ImageManager {
 
-    public static List<ImageData> GetListOfImages(int type, Context context)
+    public static List<ImageData> GetListOfImages(ImageEnum type, Context context)
     {
         IImageBuilder imageBuilder = null;
 
         switch (type)
         {
-            case 0:
+            case PICASSO_ASSETS:
+            case CUSTOM_ASSETS:
+                imageBuilder = new AssetsImageBuilder(type);
+                break;
+
+            case PICASSO_FILESYSTEM:
+            case CUSTOM_FILESYSTEM:
                 imageBuilder = new FileSystemImageBuilder();
                 break;
 
-            case 1:
-                imageBuilder = new AssetsImageBuilder();
-                break;
-
-            case 2:
+            case PICASSO_INTERNET:
+            case CUSTOM_INTERNET:
                 imageBuilder = new InternetImageBuilder();
                 break;
         }

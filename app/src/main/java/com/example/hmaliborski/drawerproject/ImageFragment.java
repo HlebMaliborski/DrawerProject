@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.hmaliborski.drawerproject.Adapters.RecyclerViewAdapter;
 import com.example.hmaliborski.drawerproject.Data.ImageData;
+import com.example.hmaliborski.drawerproject.Enums.ImageEnum;
 import com.example.hmaliborski.drawerproject.Manager.ImageManager;
 
 import java.util.List;
@@ -32,10 +33,10 @@ public class ImageFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_file_system, container, false);
         int type = getArguments().getInt(TYPE_OF_IMAGE);
+        ImageEnum imageEnum = ImageEnum.values()[type];
+        List<ImageData> list = ImageManager.GetListOfImages(imageEnum, getContext());
 
-        List<ImageData> list = ImageManager.GetListOfImages(type, getContext());
-
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), list);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), list, imageEnum);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
