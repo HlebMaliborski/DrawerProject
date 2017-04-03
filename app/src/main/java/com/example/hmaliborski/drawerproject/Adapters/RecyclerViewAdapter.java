@@ -48,7 +48,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
             case THREAD_INTERNET:
                 ThreadParser threadParser = ThreadParserManager.getImageParser(imageEnum);
                 threadParser.setParameters(holder.cellImageView, context, imageList.get(position).getImagePath());
-                threadParser.getBitmapImage();
+                threadParser.doInBackground();
                 break;
 
             case CUSTOM_ASSETS:
