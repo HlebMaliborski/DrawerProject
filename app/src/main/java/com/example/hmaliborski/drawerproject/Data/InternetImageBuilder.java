@@ -2,9 +2,6 @@ package com.example.hmaliborski.drawerproject.Data;
 
 import android.content.Context;
 
-import com.example.hmaliborski.drawerproject.Data.IImageBuilder;
-import com.example.hmaliborski.drawerproject.Data.ImageData;
-
 import java.util.ArrayList;
 import java.util.List;
 

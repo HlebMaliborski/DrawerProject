@@ -7,8 +7,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.hmaliborski.drawerproject.Constants.Constants;
-import com.example.hmaliborski.drawerproject.Data.IImageBuilder;
-import com.example.hmaliborski.drawerproject.Data.ImageData;
 import com.example.hmaliborski.drawerproject.Enums.ImageEnum;
 
 import java.io.File;

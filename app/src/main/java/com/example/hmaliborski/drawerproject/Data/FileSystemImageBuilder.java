@@ -6,14 +6,19 @@ import android.net.Uri;
 import android.os.Environment;
 
 import com.example.hmaliborski.drawerproject.Constants.Constants;
-import com.example.hmaliborski.drawerproject.Data.IImageBuilder;
-import com.example.hmaliborski.drawerproject.Data.ImageData;
+import com.example.hmaliborski.drawerproject.Enums.ImageEnum;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileSystemImageBuilder implements IImageBuilder {
+
+    private ImageEnum imageEnum;
+    public FileSystemImageBuilder(ImageEnum imageEnum)
+    {
+        this.imageEnum = imageEnum;
+    }
 
     @Override
     public List<ImageData> createListOfImages(Context context) {
@@ -28,8 +33,17 @@ public class FileSystemImageBuilder implements IImageBuilder {
 
             for (String item : listOfImages)
             {
-                uri = Uri.fromFile(new File(externalFullPath + File.separator + item));
-                list.add(new ImageData(uri.toString()));
+                switch (imageEnum)
+                {
+                    case CUSTOM_FILESYSTEM:
+                        list.add(new ImageData(externalFullPath + File.separator + item));
+                        break;
+
+                    case PICASSO_FILESYSTEM:
+                        uri = Uri.fromFile(new File(externalFullPath + File.separator + item));
+                        list.add(new ImageData(uri.toString()));
+                        break;
+                }
             }
         }
 

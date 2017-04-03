@@ -27,7 +27,7 @@ public class ImageManager {
 
             case PICASSO_FILESYSTEM:
             case CUSTOM_FILESYSTEM:
-                imageBuilder = new FileSystemImageBuilder();
+                imageBuilder = new FileSystemImageBuilder(type);
                 break;
 
             case PICASSO_INTERNET:

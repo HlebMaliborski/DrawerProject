@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         titles = new String[]{"Picasso assets images", "Picasso file system images", "Picasso internet images",
                 "Custom assets images", "Custom file system images", "Custom internet images", "Thread internet images"};
 
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         listView = (ListView) findViewById(R.id.left_drawer);
         fragment = new ImageFragment();
