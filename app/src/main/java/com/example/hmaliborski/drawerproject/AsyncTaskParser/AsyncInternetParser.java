@@ -1,4 +1,4 @@
-package com.example.hmaliborski.drawerproject.Parser;
+package com.example.hmaliborski.drawerproject.AsyncTaskParser;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,7 +14,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class CustomInternetParser extends ImageParser {
+public class AsyncInternetParser extends AsyncImageParser {
 
     @Override
     protected Bitmap doInBackground(String... params) {

@@ -1,4 +1,4 @@
-package com.example.hmaliborski.drawerproject.Parser;
+package com.example.hmaliborski.drawerproject.AsyncTaskParser;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,7 +7,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class CustomAssetsParser extends ImageParser {
+public class AsyncAssetsParser extends AsyncImageParser {
 
 
     @Override

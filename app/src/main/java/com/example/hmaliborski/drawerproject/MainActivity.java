@@ -2,8 +2,6 @@ package com.example.hmaliborski.drawerproject;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -19,10 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.hmaliborski.drawerproject.Enums.ImageEnum;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         isStoragePermissionGranted();
 
         titles = new String[]{"Picasso assets images", "Picasso file system images", "Picasso internet images",
-                "Custom assets images", "Custom file system images", "Custom internet images"};
+                "Custom assets images", "Custom file system images", "Custom internet images", "Thread internet images"};
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         listView = (ListView) findViewById(R.id.left_drawer);

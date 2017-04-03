@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 
 import com.example.hmaliborski.drawerproject.Data.ImageData;
 import com.example.hmaliborski.drawerproject.Enums.ImageEnum;
-import com.example.hmaliborski.drawerproject.Manager.ParserManager;
-import com.example.hmaliborski.drawerproject.Parser.ImageParser;
+import com.example.hmaliborski.drawerproject.Manager.AsyncParserManager;
+import com.example.hmaliborski.drawerproject.AsyncTaskParser.AsyncImageParser;
+import com.example.hmaliborski.drawerproject.Manager.ThreadParserManager;
 import com.example.hmaliborski.drawerproject.R;
+import com.example.hmaliborski.drawerproject.ThreadParser.ThreadParser;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -40,13 +42,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-        ImageParser imageParser = null;
+
         switch (imageEnum)
         {
+            case THREAD_INTERNET:
+                ThreadParser threadParser = ThreadParserManager.getImageParser(imageEnum);
+                threadParser.setParameters(holder.cellImageView, context, imageList.get(position).getImagePath());
+                threadParser.getBitmapImage();
+                break;
+
             case CUSTOM_ASSETS:
             case CUSTOM_FILESYSTEM:
             case CUSTOM_INTERNET:
-                imageParser = ParserManager.getImageParser(imageEnum);
+                AsyncImageParser imageParser = AsyncParserManager.getImageParser(imageEnum);
                 imageParser.setImageParameters(holder.cellImageView, context);
                 imageParser.execute(imageList.get(position).getImagePath());
                 break;
