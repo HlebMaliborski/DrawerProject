@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         isStoragePermissionGranted();
 
         titles = new String[]{"Picasso assets images", "Picasso file system images", "Picasso internet images",
-                "Custom assets images", "Custom file system images", "Custom internet images", "Thread internet images"};
+                "Custom assets images", "Custom file system images", "Custom internet images", "Thread internet images",
+        "Service custom internet image"};
 
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

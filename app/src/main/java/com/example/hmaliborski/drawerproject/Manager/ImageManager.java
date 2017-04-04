@@ -33,6 +33,7 @@ public class ImageManager {
             case PICASSO_INTERNET:
             case CUSTOM_INTERNET:
             case THREAD_INTERNET:
+            case SERVICE_INTERNET:
                 imageBuilder = new InternetImageBuilder();
                 break;
         }
