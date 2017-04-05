@@ -50,6 +50,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
 
         switch (imageEnum)
         {
+            case INTENT_SERVICE_INTERNET:
+                String imageNameForIntent = ServiceParser.getImageName(imageList.get(position).getImagePath());
+                boolean isFileExistsForIntent = ServiceParser.isFileExists(imageNameForIntent);
+                if(isFileExistsForIntent)
+                {
+                    String fullImagePath = ServiceParser.getFullImagePath(imageNameForIntent);
+                    AsyncImageParser imageParser = AsyncParserManager.getImageParser(ImageEnum.CUSTOM_FILESYSTEM);
+                    imageParser.setImageParameters(holder.cellImageView, context);
+                    imageParser.execute(fullImagePath);
+                }
+                else
+                {
+                    imageFragment.startIntentService(imageList.get(position).getImagePath());
+                }
+                break;
             case SERVICE_INTERNET:
                 String imageName = ServiceParser.getImageName(imageList.get(position).getImagePath());
                 boolean isFileExists = ServiceParser.isFileExists(imageName);
@@ -60,13 +75,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
                     imageParser.setImageParameters(holder.cellImageView, context);
                     imageParser.execute(fullImagePath);
                 }
-                imageFragment.setList(new Runnable() {
-                    @Override
-                    public void run() {
-                        imageFragment.sendMessage(imageList.get(position).getImagePath());
-                    }
-                });
-
+                else
+                {
+                    imageFragment.setList(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageFragment.sendMessage(imageList.get(position).getImagePath());
+                        }
+                    });
+                }
                 break;
 
             case THREAD_INTERNET:

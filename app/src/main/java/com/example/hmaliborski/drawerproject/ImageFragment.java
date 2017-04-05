@@ -1,8 +1,10 @@
 package com.example.hmaliborski.drawerproject;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +24,7 @@ import com.example.hmaliborski.drawerproject.Adapters.RecyclerViewAdapter;
 import com.example.hmaliborski.drawerproject.Data.ImageData;
 import com.example.hmaliborski.drawerproject.Enums.ImageEnum;
 import com.example.hmaliborski.drawerproject.Manager.ImageManager;
+import com.example.hmaliborski.drawerproject.Services.ParserIntentService;
 import com.example.hmaliborski.drawerproject.Services.ParserService;
 
 import java.util.ArrayList;
@@ -44,6 +47,7 @@ public class ImageFragment extends Fragment {
     private List<Runnable> runnableList = new ArrayList<>();
     private IBinder binder;
     private Messenger serviceMessenger;
+    private Intent intent;
 
     boolean bound = false;
 
@@ -58,6 +62,16 @@ public class ImageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_file_system, container, false);
         int type = getArguments().getInt(TYPE_OF_IMAGE);
         ImageEnum imageEnum = ImageEnum.values()[type];
+
+        if(imageEnum == ImageEnum.INTENT_SERVICE_INTERNET)
+        {
+            intent = new Intent(getContext(), ParserIntentService.class);
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(FragmentReceiver.RECEIVE_MESSAGE);
+            intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+            FragmentReceiver fragmentReceiver = new FragmentReceiver();
+            getContext().registerReceiver(fragmentReceiver, intentFilter);
+        }
 
         if(imageEnum == ImageEnum.SERVICE_INTERNET)
         {
@@ -129,5 +143,29 @@ public class ImageFragment extends Fragment {
                     super.handleMessage(msg);
             }
         }
+    }
+
+    public class FragmentReceiver extends BroadcastReceiver
+    {
+        public static final String RECEIVE_MESSAGE = "com.example.hmaliborski.drawerproject.MESSAGE_PROCESSED";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean isLoaded = intent.getBooleanExtra(ParserIntentService.IMAGE_IS_LOADED, false);
+            if(isLoaded)
+            {
+                adapter.notifyDataSetChanged();
+            }
+            else
+            {
+                Log.d("ImageIsNotLoaded", "You have problem with loading image");
+            }
+        }
+    }
+
+    public void startIntentService(String path)
+    {
+        intent.putExtra(ParserIntentService.IMAGE_PATH, path);
+        getContext().startService(intent);
     }
 }

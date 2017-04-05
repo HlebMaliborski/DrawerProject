@@ -23,7 +23,10 @@
         <service
             android:name=".Services.ParserService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+        <service
+            android:name=".Services.ParserIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>
