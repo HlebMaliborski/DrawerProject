@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
@@ -36,7 +37,7 @@ import java.util.concurrent.Executors;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ImageFragment extends Fragment {
+public class ImageFragment extends Fragment{
     final Messenger fragmentMessenger = new Messenger(new FragmentHandler());
 
     public static final String TYPE_OF_IMAGE = "type";
@@ -48,7 +49,6 @@ public class ImageFragment extends Fragment {
     private IBinder binder;
     private Messenger serviceMessenger;
     private Intent intent;
-
     boolean bound = false;
 
     public ImageFragment() {
@@ -63,19 +63,20 @@ public class ImageFragment extends Fragment {
         int type = getArguments().getInt(TYPE_OF_IMAGE);
         ImageEnum imageEnum = ImageEnum.values()[type];
 
-        if(imageEnum == ImageEnum.INTENT_SERVICE_INTERNET)
+        switch (imageEnum)
         {
-            intent = new Intent(getContext(), ParserIntentService.class);
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(FragmentReceiver.RECEIVE_MESSAGE);
-            intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-            FragmentReceiver fragmentReceiver = new FragmentReceiver();
-            getContext().registerReceiver(fragmentReceiver, intentFilter);
-        }
+            case INTENT_SERVICE_INTERNET:
+                intent = new Intent(getContext(), ParserIntentService.class);
+                IntentFilter intentFilter = new IntentFilter();
+                intentFilter.addAction(FragmentReceiver.RECEIVE_MESSAGE);
+                intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+                FragmentReceiver fragmentReceiver = new FragmentReceiver();
+                getContext().registerReceiver(fragmentReceiver, intentFilter);
+                break;
 
-        if(imageEnum == ImageEnum.SERVICE_INTERNET)
-        {
-            initializeService();
+            case SERVICE_INTERNET:
+                initializeService();
+                break;
         }
 
         List<ImageData> list = ImageManager.GetListOfImages(imageEnum, getContext());
@@ -128,6 +129,7 @@ public class ImageFragment extends Fragment {
     {
         runnableList.add(runnable);
     }
+
 
     private class FragmentHandler extends Handler
     {

@@ -2,7 +2,12 @@ package com.example.hmaliborski.drawerproject;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -15,8 +20,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.hmaliborski.drawerproject.Enums.ImageEnum;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private String[] titles;
 
+
+    TextView textView;
+    Test test;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +53,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         isStoragePermissionGranted();
 
+        textView = (TextView) findViewById(R.id.ura);
+        test = new Test();
+        test.start();
+
         titles = new String[]{"Picasso assets images", "Picasso file system images", "Picasso internet images",
                 "Custom assets images", "Custom file system images", "Custom internet images", "Thread internet images",
-        "Service custom internet image", "Intent service internet image"};
+        "Service custom internet image", "Intent service internet image", "Interface intent service","Pending intent service"};
 
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -46,6 +70,32 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new DrawerItemClickListener());
     }
 
+
+    public void clickUra(View v)
+    {
+        Message message = test.handler.obtainMessage();
+        test.handler.sendMessage(message);
+    }
+    public class Test extends Thread
+    {
+        Handler handler;
+        @Override
+        public void run() {
+            Looper.prepare();
+            handler = new Handler(){
+                @Override
+                public void handleMessage(Message msg) {
+                    testMethod();
+                }
+            };
+            Looper.loop();
+        }
+    }
+
+    private void testMethod()
+    {
+        textView.setText("Ura");
+    }
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {

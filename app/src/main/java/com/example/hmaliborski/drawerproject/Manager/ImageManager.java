@@ -35,6 +35,7 @@ public class ImageManager {
             case THREAD_INTERNET:
             case SERVICE_INTERNET:
             case INTENT_SERVICE_INTERNET:
+            case INTERFACE_INTENT_SERVICE:
                 imageBuilder = new InternetImageBuilder();
                 break;
         }

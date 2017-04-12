@@ -1,6 +1,8 @@
 package com.example.hmaliborski.drawerproject.ThreadParser;
 
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import java.io.IOException;
@@ -14,7 +16,6 @@ public class InternetThreadParser extends ThreadParser {
 
     @Override
     public void doInBackground() {
-
         Thread thread = new Thread(()->
         {
             try

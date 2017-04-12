@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.hmaliborski.drawerproject.Data.ImageData;
 import com.example.hmaliborski.drawerproject.Enums.ImageEnum;
@@ -14,6 +15,7 @@ import com.example.hmaliborski.drawerproject.AsyncTaskParser.AsyncImageParser;
 import com.example.hmaliborski.drawerproject.Manager.ThreadParserManager;
 import com.example.hmaliborski.drawerproject.R;
 import com.example.hmaliborski.drawerproject.ServiceParser.ServiceParser;
+import com.example.hmaliborski.drawerproject.TestAsync.CustomAsync;
 import com.example.hmaliborski.drawerproject.ThreadParser.ThreadParser;
 import com.squareup.picasso.Picasso;
 
@@ -45,11 +47,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
         return viewHolder;
     }
 
+
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
         switch (imageEnum)
         {
+            case INTERFACE_INTENT_SERVICE:
+                if(!checkIsImageExists(holder, position))
+                {
+
+                }
+                else
+                {
+                }
+                break;
+
             case INTENT_SERVICE_INTERNET:
                 String imageNameForIntent = ServiceParser.getImageName(imageList.get(position).getImagePath());
                 boolean isFileExistsForIntent = ServiceParser.isFileExists(imageNameForIntent);
@@ -95,9 +108,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
             case CUSTOM_ASSETS:
             case CUSTOM_FILESYSTEM:
             case CUSTOM_INTERNET:
-                AsyncImageParser imageParser = AsyncParserManager.getImageParser(imageEnum);
+                CustomAsync customAsync = new CustomAsync();
+                customAsync.setImageParameters(holder.cellImageView, context);
+                customAsync.execute(imageList.get(position).getImagePath());
+                /*AsyncImageParser imageParser = AsyncParserManager.getImageParser(imageEnum);
                 imageParser.setImageParameters(holder.cellImageView, context);
-                imageParser.execute(imageList.get(position).getImagePath());
+                imageParser.execute(imageList.get(position).getImagePath());*/
                 break;
 
             case PICASSO_ASSETS:
@@ -106,6 +122,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
                 Picasso.with(context).load(imageList.get(position).getImagePath()).into(holder.cellImageView);
                 break;
         }
+    }
+    private boolean checkIsImageExists(RecyclerViewHolder holder, int position)
+    {
+        String imageName = ServiceParser.getImageName(imageList.get(position).getImagePath());
+        boolean isFileExistsForPending = ServiceParser.isFileExists(imageName);
+        if(isFileExistsForPending)
+        {
+            setImageView(holder.cellImageView, imageName);
+        }
+
+        return isFileExistsForPending;
+    }
+
+    private void setImageView(ImageView imageView, String imageName)
+    {
+        String fullImagePath = ServiceParser.getFullImagePath(imageName);
+        AsyncImageParser imageParser = AsyncParserManager.getImageParser(ImageEnum.CUSTOM_FILESYSTEM);
+        imageParser.setImageParameters(imageView, context);
+        imageParser.execute(fullImagePath);
     }
 
     @Override
