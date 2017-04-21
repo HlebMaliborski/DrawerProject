@@ -43,23 +43,18 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private String[] titles;
 
-
     TextView textView;
-    Test test;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        isStoragePermissionGranted();
 
-        textView = (TextView) findViewById(R.id.ura);
-        test = new Test();
-        test.start();
+        isStoragePermissionGranted();
 
         titles = new String[]{"Picasso assets images", "Picasso file system images", "Picasso internet images",
                 "Custom assets images", "Custom file system images", "Custom internet images", "Thread internet images",
-        "Service custom internet image", "Intent service internet image", "Interface intent service","Pending intent service"};
+        "Service custom internet image", "Intent service internet image", "Interface intent service","Pending intent service", "Test Fragment"};
 
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -68,28 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, titles));
         listView.setOnItemClickListener(new DrawerItemClickListener());
-    }
-
-
-    public void clickUra(View v)
-    {
-        Message message = test.handler.obtainMessage();
-        test.handler.sendMessage(message);
-    }
-    public class Test extends Thread
-    {
-        Handler handler;
-        @Override
-        public void run() {
-            Looper.prepare();
-            handler = new Handler(){
-                @Override
-                public void handleMessage(Message msg) {
-                    testMethod();
-                }
-            };
-            Looper.loop();
-        }
     }
 
     private void testMethod()
@@ -126,6 +99,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void selectItem(int position) {
 
+        if (position == 11)
+        {
+            Fragment fragment = new LoaderFragment();
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_frame, fragment);
+            transaction.commit();
+            drawerLayout.closeDrawer(listView);
+            return;
+        }
         Fragment fragment = new ImageFragment();
 
         Bundle args = new Bundle();

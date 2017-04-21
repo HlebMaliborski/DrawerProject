@@ -15,6 +15,7 @@ import com.example.hmaliborski.drawerproject.AsyncTaskParser.AsyncImageParser;
 import com.example.hmaliborski.drawerproject.Manager.ThreadParserManager;
 import com.example.hmaliborski.drawerproject.R;
 import com.example.hmaliborski.drawerproject.ServiceParser.ServiceParser;
+//import com.example.hmaliborski.drawerproject.TestAsync.CustomAsync;
 import com.example.hmaliborski.drawerproject.TestAsync.CustomAsync;
 import com.example.hmaliborski.drawerproject.ThreadParser.ThreadParser;
 import com.squareup.picasso.Picasso;
