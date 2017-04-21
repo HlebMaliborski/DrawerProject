@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         isStoragePermissionGranted();
 
         titles = new String[]{"Picasso assets images", "Picasso file system images", "Picasso internet images",
